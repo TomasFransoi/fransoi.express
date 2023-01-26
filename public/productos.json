@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "verde",
+    "code": 8,
+    "description": "este producto es de color verde",
+    "price": 1000,
+    "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Flag_of_Libya_%281977%E2%80%932011%29.svg/360px-Flag_of_Libya_%281977%E2%80%932011%29.svg.png",
+    "stock": 2
+  },
+  {
+    "id": 2,
+    "title": "azul",
+    "code": 5,
+    "description": "este producto es de color azul",
+    "price": 123,
+    "thumbnail": "https://biblioteca.acropolis.org/wp-content/uploads/2014/12/azul.png",
+    "stock": 123
+  }
+]

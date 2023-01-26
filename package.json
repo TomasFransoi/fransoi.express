@@ -1,0 +1,24 @@
+{
+  "name": "tomasfransoiservidorconexpres",
+  "version": "1.0.0",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TomasFransoi/fransoi.express.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TomasFransoi/fransoi.express/issues"
+  },
+  "homepage": "https://github.com/TomasFransoi/fransoi.express#readme",
+  "description": ""
+}
