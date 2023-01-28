@@ -3,13 +3,14 @@ class Contenedor {
     constructor(path){
         this.path = path;
     }
-    addProduct = async(title,description,price,thumbnail,stock,code)=>{
+    addProduct = async(title,code,description,price,thumbnail,stock,status = "true",category)=>{
         try{
-            if (title != undefined && description != undefined && price != undefined && thumbnail != undefined && stock != undefined && code != undefined) {
+            if (title != undefined && description != undefined && price != undefined && stock != undefined && code != undefined && category != undefined) {
             if (fs.existsSync(this.path)) {
                 const contenido = await fs.promises.readFile(this.path,"utf8")
                 if (contenido) {
                     const productos = JSON.parse(contenido)
+
                     if (productos.find(element => element.code == code) == undefined) {
                     const newProductId = productos.length+1
                     const newProducto={
@@ -19,12 +20,15 @@ class Contenedor {
                         description,
                         price,
                         thumbnail,
-                        stock
+                        stock,
+                        status,
+                        category
                     }
                     productos.push(newProducto)
                     await fs.promises.writeFile(this.path, JSON.stringify(productos, null, 2))
+                    return "producto agregado"
                 }else {
-                    console.log("ya hay un objeto con ese code");
+                    return "ya hay un objeto con ese code";
                 }   
                 } else {
                     const newProducto={
@@ -34,9 +38,12 @@ class Contenedor {
                         description,
                         price,
                         thumbnail,
-                        stock
+                        stock,
+                        status,
+                        category
                     }
                     await fs.promises.writeFile(this.path,JSON.stringify([newProducto],null,2))
+                    return "producto agregado"
                 }
             } else {
                 const newProducto={
@@ -46,25 +53,28 @@ class Contenedor {
                     description,
                     price,
                     thumbnail,
-                    stock
+                    stock,
+                    status,
+                    category
                 }
                 await fs.promises.writeFile(this.path,JSON.stringify([newProducto],null,2))
+                return "producto agregado"
             }
             } else {
             
-            console.log("rellenar todos los criterios");
+                return "rellenar todos los criterios";
         }
         }catch (error){
             console.log(error)
         }
     }
-    getById = async(id)=>{
+    getById = async(pid)=>{
         try {
             if(fs.existsSync(this.path)){
                 const contenido = await fs.promises.readFile(this.path,"utf8");
                 if(contenido){
                     const productos = JSON.parse(contenido);
-                    const producto = productos.find(item=>item.id===id);
+                    const producto = productos.find(item=>item.id==pid);
                     return producto
                 } else{
                     return "El archivo esta vacio"
@@ -137,7 +147,7 @@ class Contenedor {
                 const contenido = await fs.promises.readFile(this.path,"utf8");
                     if (contenido) {
                         const productos = JSON.parse(contenido);
-                        const productIndex = productos.findIndex(producto => producto.id === id);
+                        const productIndex = productos.findIndex(producto => producto.id == id);
                         if (productIndex > -1) {
                         const updatedProduct = {
                             ...productos[productIndex],
