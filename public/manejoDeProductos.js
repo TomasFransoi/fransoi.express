@@ -5,47 +5,9 @@ class Contenedor {
     }
     addProduct = async(title,code,description,price,thumbnail,stock,status = "true",category)=>{
         try{
-            if (title != undefined && description != undefined && price != undefined && stock != undefined && code != undefined && category != undefined) {
-            if (fs.existsSync(this.path)) {
-                const contenido = await fs.promises.readFile(this.path,"utf8")
-                if (contenido) {
-                    const productos = JSON.parse(contenido)
-
-                    if (productos.find(element => element.code == code) == undefined) {
-                    const newProductId = productos.length+1
-                    const newProducto={
-                        id:newProductId,
-                        title,
-                        code,
-                        description,
-                        price,
-                        thumbnail,
-                        stock,
-                        status,
-                        category
-                    }
-                    productos.push(newProducto)
-                    await fs.promises.writeFile(this.path, JSON.stringify(productos, null, 2))
-                    return "producto agregado"
-                }else {
-                    return "ya hay un objeto con ese code";
-                }   
-                } else {
-                    const newProducto={
-                        id:1,
-                        title,
-                        code,
-                        description,
-                        price,
-                        thumbnail,
-                        stock,
-                        status,
-                        category
-                    }
-                    await fs.promises.writeFile(this.path,JSON.stringify([newProducto],null,2))
-                    return "producto agregado"
-                }
-            } else {
+            if (title === undefined && description === undefined && price === undefined && stock === undefined && code === undefined && category === undefined) {
+                return "rellenar todos los criterios";
+            } else if (!fs.existsSync(this.path)) {
                 const newProducto={
                     id:1,
                     title,
@@ -59,11 +21,41 @@ class Contenedor {
                 }
                 await fs.promises.writeFile(this.path,JSON.stringify([newProducto],null,2))
                 return "producto agregado"
-            }
+            } else if (!await fs.promises.readFile(this.path,"utf8")) {
+                const newProducto={
+                    id:1,
+                    title,
+                    code,
+                    description,
+                    price,
+                    thumbnail,
+                    stock,
+                    status,
+                    category
+                }
+                await fs.promises.writeFile(this.path,JSON.stringify([newProducto],null,2))
+                return "producto agregado"
+            } else if (JSON.parse(await fs.promises.readFile(this.path,"utf8")).find(element => element.code == code) != undefined) {
+                return "ya hay un objeto con ese code";
             } else {
-            
-                return "rellenar todos los criterios";
-        }
+                const contenido = await fs.promises.readFile(this.path,"utf8")
+                const productos = JSON.parse(contenido)
+                const newProductId = productos.length+1
+                const newProducto={
+                    id:newProductId,
+                    title,
+                    code,
+                    description,
+                    price,
+                    thumbnail,
+                    stock,
+                    status,
+                    category
+                }
+                productos.push(newProducto)
+                await fs.promises.writeFile(this.path, JSON.stringify(productos, null, 2))
+                return "producto agregado"
+            }    
         }catch (error){
             console.log(error)
         }
