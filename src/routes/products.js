@@ -1,6 +1,8 @@
 import { Router } from "express";
+import { Socket } from "socket.io";
 const router = Router();
-import Contenedor from "../../public/manejoDeProductos.js";
+import Contenedor from "../../management/manejoDeProductos.js";
+import {io} from "../index"
 const productos = new Contenedor("../data/productos.json")
 
 router.get("/",async(req,res) =>{
@@ -8,8 +10,10 @@ router.get("/",async(req,res) =>{
     const products = await productos.getAll();
     if (limit){
         products.splice(limit);
+        res.render("home",{products:products})
         res.json({products:products})
     }else{
+        res.render("home",{products:products})
         res.json({products:products})
     }
 });
@@ -18,11 +22,6 @@ router.get("/:pid",async(req,res) =>{
     const producto = await productos.getById(pid);
     res.json({producto:producto})
 });
-router.post("/",async(req,res) =>{
-    const {title,code,description,price,thumbnail,stock} = req.body
-    const respuesta = await productos.addProduct(title,code,description,price,thumbnail,stock)
-    res.json({message: respuesta})
-})
 router.put("/:pid",async(req,res)=>{
     const pid = req.params.pid
     const {title,code,description,price,thumbnail,stock} = req.body
@@ -36,8 +35,24 @@ router.put("/:pid",async(req,res)=>{
     }
     productos.updateProduct(pid,updates)
 })
-router.delete("/:pid",async(req,res)=>{
-    const pid = req.params.pid
-    productos.deleteById(pid)
+router.get("/realTimeProducts",(req,res)=>{
+    res.render("realTimeProducts",{})
+})
+io.on("connect", async(socket)=>{
+    const products = await productos.getAll()
+    socket.emit("products",products)
+    router.post("/",async(req,res) =>{
+        const {title,code,description,price,thumbnail,stock} = req.body
+        const respuesta = await productos.addProduct(title,code,description,price,thumbnail,stock)
+        res.json({message: respuesta})
+        const products = await productos.getAll()
+        socket.emit("products",products)
+    })
+    router.delete("/:pid",async(req,res)=>{
+        const pid = req.params.pid
+        productos.deleteById(pid)
+        const products = await productos.getAll()
+        socket.emit("products",products)
+    })
 })
 export default router

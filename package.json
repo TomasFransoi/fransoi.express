@@ -10,7 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "nodemon": "^2.0.20"
+    "handlebars": "^4.7.7",
+    "nodemon": "^2.0.20",
+    "socket.io": "^4.5.4"
   },
   "repository": {
     "type": "git",
@@ -20,6 +22,5 @@
     "url": "https://github.com/TomasFransoi/fransoi.express/issues"
   },
   "homepage": "https://github.com/TomasFransoi/fransoi.express#readme",
-  "devDependencies": {},
   "description": ""
 }
