@@ -1,8 +1,7 @@
 import { Router } from "express";
-import { Socket } from "socket.io";
 const router = Router();
 import Contenedor from "../../management/manejoDeProductos.js";
-import {io} from "../index"
+import {io} from "../app"
 const productos = new Contenedor("../data/productos.json")
 
 router.get("/",async(req,res) =>{
