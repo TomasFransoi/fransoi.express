@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
-import Contenedor from "../../management/manejoDeProductos.js";
-import {io} from "../app"
+import Contenedor from "../dao/manejoDeProductos.js";
+import {io} from "../index"
 const productos = new Contenedor("../data/productos.json")
 
 router.get("/",async(req,res) =>{

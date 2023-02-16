@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Contenedor from "../../management/manejodeDeCarts.js";
+import Contenedor from "../dao/manejodeDeCarts.js";
 const carts = new Contenedor("../data/carts.json","../data/productos.json")
 const router = Router();
 

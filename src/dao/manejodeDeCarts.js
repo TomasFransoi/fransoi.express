@@ -1,4 +1,6 @@
 import fs from "fs"
+import cartModel from "./models/cartsModel"
+import productModel from "./models/productsModel"
 class Contenedor {
     constructor(path,productsPath){
         this.path = path;
@@ -12,25 +14,28 @@ class Contenedor {
                     const carts = JSON.parse(contenido)
                     const cartId = carts.length+1
                     const newCart={
-                        id:cartId,
+                        cid:cartId,
                         products
                     }
+                    await cartModel.create(newCart)
                     carts.push(newCart)
                     await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))
                     return "carrito creado"
                 } else {
                     const newCart={
-                        id:1,
+                        cid:1,
                         products
                     }
+                    await cartModel.create(newCart)
                     await fs.promises.writeFile(this.path,JSON.stringify([newCart],null,2))
                     return "carrito creado"
                 }
             } else {
                 const newCart={
-                    id:1,
+                    cid:1,
                     products
                 }
+                await cartModel.create(newCart)
                 await fs.promises.writeFile(this.path,JSON.stringify([newCart],null,2))
                 return "carrito creado"
             }
@@ -38,13 +43,14 @@ class Contenedor {
             console.log(error)
         }
     }
-    getById = async(id)=>{
+    getById = async(cid)=>{
         try {
             if(fs.existsSync(this.path)){
                 const contenido = await fs.promises.readFile(this.path,"utf8");
                 if(contenido){
                     const carts = JSON.parse(contenido);
-                    const cart = carts.find(item=>item.id===id);
+                    const cart = cartModel.findOne(cid)
+                    //const cart = carts.find(item=>item.id===id);
 
                     return  cart.products
                 } else{
@@ -59,7 +65,28 @@ class Contenedor {
     }
     updateCart = async(cid,pid,cuantity = 1)=>{
         try {
+            const cart = await cartModel.findOne(cid)
+            const product = await productModel.findOne(pid)
+            if (cart != undefined && product != undefined) {
+                const productRepetido = cart.products.find(producto => producto.pid == pid)                      
+            if (productRepetido != undefined){
+                const productNew = {
+                    productPid :product.pid,
+                    cuantity,
+                };
+
+                cart.products.push(productNew);
+                await cartModel.findOneAndUpdate(cid,cart)
+            }else{
+                return "ya hay un producto con el mismo id"
+            }                        
+            } else {
+                console.log("No se encontro el producto con el id especificado o carito con el id especificado");
+                }
+                            /*
             if (fs.existsSync(this.path) && fs.existsSync(this.productsPath)) {
+
+
                 const contenidoCarts = await fs.promises.readFile(this.path,"utf8");
                 const contenidoProducts = await fs.promises.readFile(this.productsPath,"utf8");
                     if (contenidoCarts && contenidoProducts) {
@@ -95,8 +122,8 @@ class Contenedor {
                 return "El archivo de carts o productos no existe"
 
             }
-
-        } catch (error) {
+            */
+        }catch (error) {
             console.log(error);
         }
 
