@@ -1,6 +1,6 @@
-import products from "../routes/products.js"
-import carts from "../routes/carts.js"
-import users from "../routes/users.js"
+import products from "../controlers/products.js"
+import carts from "../controlers/carts.js"
+import users from "../controlers/users.js"
 const router = (app) => {
     app.use("/api/products",products)
     app.use("/api/carts",carts)

@@ -1,6 +1,5 @@
 [
   {
-    "id": 1,
     "title": "verde",
     "code": 8,
     "description": "este producto es de color verde",
@@ -11,7 +10,6 @@
     "category": "color"
   },
   {
-    "id": 2,
     "title": "azul",
     "code": 5,
     "description": "este producto es de color azul",

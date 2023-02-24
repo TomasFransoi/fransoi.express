@@ -16,7 +16,6 @@ app.engine("handlebars",handlebars.engine())
 app .set("views", "./views")
 app.set("view engine","handlebars")
 const server = http.createServer(app)
-const io = new Server(server);
 router(app);
 
 mongoose.connect(`mongodb+srv://${userDb}:${passDb}@tomasfransoi.vpqjpof.mongodb.net/?retryWrites=true&w=majority`,(error)=>{
@@ -25,4 +24,5 @@ if (error) {
     parseWithoutProcessing.exit()
 }
 })
-export default app;io
+export const io = new Server(server);
+export default app

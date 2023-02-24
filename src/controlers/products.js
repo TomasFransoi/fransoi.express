@@ -3,7 +3,6 @@ const router = Router();
 import Contenedor from "../dao/manejoDeProductos.js";
 import {io} from "../index"
 const productos = new Contenedor("../data/productos.json")
-
 router.get("/",async(req,res) =>{
     const {limit} = req.query;
     const products = await productos.getAll();
