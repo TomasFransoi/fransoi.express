@@ -18,7 +18,6 @@ class Contenedor {
     getById = async(cid)=>{
         try {
                     const cart = cartModel.findOne({_id:cid})
-                    //const cart = carts.find(item=>item.id===id);
 
                     return  cart.products
         } catch (error) {
@@ -48,6 +47,30 @@ class Contenedor {
         }catch (error) {
             console.log(error);
         }
+
+    }
+    delateProduct = async(cid,pid)=>{
+        const cart = await cartModel.findOne({_id:cid})
+        const productosNuevos = cart.products.filter(obj => obj._id !== pid)
+        cart.products = [...productosNuevos]
+        await cartModel.findOneAndUpdate(cid,cart)
+    }
+    updateCuantity = async(cuantity,pid,cid)=>{
+        const cart = await cartModel.findOne({_id:cid})
+        const product = await productModel.findOne({_id:pid})
+        const productosNuevos = cart.products.filter(obj => obj._id !== pid)
+        const productNew = {
+            _id:product.pid,
+            cuantity,
+        };
+        productosNuevos.push(productNew)
+        cart.products = [...productosNuevos]
+        await cartModel.findOneAndUpdate(cid,cart)
+    }
+    delateProductsInCart = async(cid)=>{
+        const cart = await cartModel.findOne({_id:cid})
+        cart.products = []
+        await cartModel.findOneAndUpdate(cid,cart)
 
     }
 }

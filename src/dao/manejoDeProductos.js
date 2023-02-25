@@ -38,9 +38,10 @@ class Contenedor {
             console.log(error)
         }
     }
-    getAll = async()=>{
+    getAll = async(query = {},limit,page,sort)=>{
         try {
-                    const productos = await products.find()
+            const sortLowCase = sort.toLowerCase()
+                    const productos = await products.paginate(query,{limit:limit,page:page,sort:{price :sortLowCase}})
                     return productos
         } catch (error) {
             console.log(error)

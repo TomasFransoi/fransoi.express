@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import MongoosePaginate from "mongoose-paginate-v2"
 const productsCollection = "products"
 const productSchema = new mongoose.Schema({
     code: Number,

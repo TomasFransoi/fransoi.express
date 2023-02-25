@@ -4,20 +4,27 @@ import Contenedor from "../dao/manejoDeProductos.js";
 import {io} from "../index"
 const productos = new Contenedor("../data/productos.json")
 router.get("/",async(req,res) =>{
-    const {limit} = req.query;
-    const products = await productos.getAll();
-    if (limit){
-        products.splice(limit);
-        res.render("home",{products:products})
+    const {query,limit,page,sort} = req.query;
+    const products = await productos.getAll(query,limit,page,sort);
+    const result = await Swal.fire({
+        title: "Identificate",
+        input: "text",
+        text: "Ingresa un ID",
+        inputValidator: value => {
+          return !value && "Necesitas escribir un ID para continuar!"
+        },
+        allowOutsideClick: false
+      })
+      const ID = result.value
+      localStorage.setItem("id",ID)
+        res.render("products",{products:products,id:ID})
         res.json({products:products})
-    }else{
-        res.render("home",{products:products})
-        res.json({products:products})
-    }
 });
 router.get("/:pid",async(req,res) =>{
     const pid = req.params.pid;
+    const ID = localStorage.getItem("id")
     const producto = await productos.getById(pid);
+    res.render("producto",{producto:producto,id:ID})
     res.json({producto:producto})
 });
 router.put("/:pid",async(req,res)=>{

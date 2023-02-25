@@ -1,0 +1,10 @@
+<div id="productos">
+    {{#each products}}
+        <h3>Producto: {{this.title}}</h3>
+        <ul>
+            <li>Price: {{this.price}}</li>
+            <li><a href="/api/products/"+{{this._id}}><button>description</button></a></li>
+            <li><a href="/api/cart/"+{{id}}+"product"+{{this.id}}><button>add to the card</button></a></li>
+        </ul>
+    {{/each}}
+</div>
