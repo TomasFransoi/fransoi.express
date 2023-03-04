@@ -17,12 +17,11 @@ app .set("views", "./views")
 app.set("view engine","handlebars")
 const server = http.createServer(app)
 router(app);
-
 mongoose.connect(`mongodb+srv://${userDb}:${passDb}@tomasfransoi.vpqjpof.mongodb.net/?retryWrites=true&w=majority`,(error)=>{
 if (error) {
     console.log(`cannot connect to database: ${error}`);
     parseWithoutProcessing.exit()
 }
 })
-export const io = new Server(server);
-export default app
+const io = new Server(server);
+export default {app,io}
