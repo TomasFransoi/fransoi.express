@@ -4,7 +4,7 @@ import handlebars from "express-handlebars"
 import { Server } from "socket.io";
 import http from "http"
 import mongoose from "mongoose";
-import {userDb,passDb} from "./config/config";
+import {userDb,passDb} from "./config/config.js";
 
 const app = express();
 

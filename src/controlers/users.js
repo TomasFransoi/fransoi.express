@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const socket = require('../chat/chat');
+import { Socket } from 'socket.io';
 
 const router = Router();
 

@@ -1,5 +1,5 @@
-import io from "../index"
-import Contenedor from "../dao/manejoDeMessages"
+import io from "../index.js"
+import Contenedor from "../dao/manejoDeMessages.js"
 const chat = new Contenedor()
 io.on('connection', socket => {
     console.log(`Client with id ${socket.id} is connected`)
