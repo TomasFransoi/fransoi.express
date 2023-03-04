@@ -12,3 +12,4 @@ class Contenedor{
         return log
     }
 }
+export default Contenedor;

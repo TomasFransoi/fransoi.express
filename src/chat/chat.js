@@ -16,6 +16,6 @@ io.on('connection', socket => {
       io.emit("messageLogs", messages)
     })
   })
-  export default io
+export default io
   
   
